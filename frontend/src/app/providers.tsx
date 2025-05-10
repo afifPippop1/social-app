@@ -1,8 +1,8 @@
 "use client";
 
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import StoreProvider from "@/provider/store-provider";
 import { ReactNode } from "react";
 
 export default function Providers({ children }: { children: ReactNode }) {
-  return <AppRouterCacheProvider>{children}</AppRouterCacheProvider>;
+  return <StoreProvider>{children}</StoreProvider>;
 }
