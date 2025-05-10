@@ -47,7 +47,20 @@ export class UserRepository {
    * @return {Promise<void>} A promise that resolves to an array of `User`.
    */
   static async updateUser(user: IUser): Promise<void> {
-    await userRefs.doc(user.id).set(user);
+    await userRefs.doc(user.id).update(this.sanitizeData(user));
     return;
+  }
+
+  /**
+   * Eliminate undefined key value pairs
+   * @param {T}data
+   * @return {T}
+   */
+  static sanitizeData<T>(data: T): T {
+    try {
+      return JSON.parse(JSON.stringify(data));
+    } catch {
+      return data;
+    }
   }
 }

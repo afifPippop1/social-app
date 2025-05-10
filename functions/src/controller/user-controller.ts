@@ -19,6 +19,7 @@ export class UserController {
       return;
     } catch (e: any) {
       res.status(500).json(error(e?.message || "Something went wrong"));
+      return;
     }
   }
 
@@ -29,10 +30,15 @@ export class UserController {
    * @return {Promise<void>}
    */
   static async UpdateUser(req: Request, res: Response): Promise<void> {
-    const { id } = req.params;
-    const { email, displayName } = req.body;
-    await UserRepository.updateUser({ id, email, displayName });
-    res.status(200).json({ ok: true });
-    return;
+    try {
+      const { id } = req.params;
+      const { email, displayName } = req.body;
+      await UserRepository.updateUser({ id, email, displayName });
+      res.status(200).json({ ok: true });
+      return;
+    } catch (e: any) {
+      res.status(500).json(error(e?.message || "Something went wrong"));
+      return;
+    }
   }
 }
