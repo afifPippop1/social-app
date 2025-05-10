@@ -23,7 +23,7 @@ export class UserRepository {
    * @param {string}id
    * @return {Promise<User?>} A promise that resolves to an array of `User`.
    */
-  static async getUserById(id?: string): Promise<User | undefined> {
+  static async getUserById(id: string): Promise<User | undefined> {
     if (id) {
       const snapshot = await userRefs.doc(id).get();
       return User.fromJson(snapshot.data());

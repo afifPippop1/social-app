@@ -1,5 +1,6 @@
 import { auth } from "@/config/firebase";
 import { IUser, User } from "@/entities/user";
+import { UserService } from "@/services/user-service";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -7,12 +8,17 @@ export const listenToAuth = createAsyncThunk<IUser | null>(
   "auth/listen",
   async () => {
     return new Promise((resolve) => {
-      onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, async (user) => {
         if (user) {
-          resolve(User.fromJson({ id: user.uid, ...user }).toJson());
-        } else {
-          resolve(null);
+          const me = await UserService.me();
+          if (me.status === "success") {
+            const u = User.fromJson(me.data).toJson();
+            console.log(u);
+            resolve(u);
+            return;
+          }
         }
+        resolve(null);
       });
     });
   }
