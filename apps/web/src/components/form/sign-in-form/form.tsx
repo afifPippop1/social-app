@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { SignInErrorMessage } from "./error-message";
 import { signInSchema } from "./schema";
+import { SignInSuccessMessage } from "./success-message";
 
 export function SignInForm() {
   const { formState, handleSubmit, register } = useForm({
@@ -15,6 +16,7 @@ export function SignInForm() {
   });
 
   const [signInErr, setSignInErr] = useState(false);
+  const [signInSuccess, setSignInSuccess] = useState(false);
 
   return (
     <form
@@ -22,14 +24,17 @@ export function SignInForm() {
       onSubmit={handleSubmit(async ({ email, password }) => {
         try {
           await signInWithEmailAndPassword(auth, email, password);
+          setSignInSuccess(true);
           window.location.pathname = "/";
         } catch {
+          setSignInSuccess(false);
           setSignInErr(true);
         }
       })}
     >
       <Stack gap="1.5rem">
         <SignInErrorMessage error={signInErr} />
+        <SignInSuccessMessage success={signInSuccess} />
         <TextField
           error={!!formState.errors.email}
           helperText={formState.errors.email?.message}
@@ -45,7 +50,7 @@ export function SignInForm() {
           {...register("password")}
         />
         <Button
-          loading={formState.isSubmitting}
+          loading={formState.isSubmitting || signInSuccess}
           type="submit"
           variant="contained"
         >

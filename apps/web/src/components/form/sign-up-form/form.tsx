@@ -7,12 +7,14 @@ import { signUpSchema } from "./schema";
 import { AuthService } from "@/services/auth-service";
 import { SignUpErrorMessage } from "./error-message";
 import { useState } from "react";
+import { SignUpSuccessMessage } from "./success-message";
 
 export function SignUpForm() {
   const { formState, handleSubmit, register } = useForm({
     resolver: zodResolver(signUpSchema),
   });
   const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
 
   return (
     <form
@@ -21,16 +23,20 @@ export function SignUpForm() {
         try {
           const res = await AuthService.signUp(data);
           if (res.status === "success") {
+            setSuccess(true);
             window.location.pathname = "/sign-in";
+            return;
           }
           throw Error(res?.error?.message);
         } catch (e: any) {
+          setSuccess(false);
           setError(e?.message || "Something went wrong");
         }
       })}
     >
       <Stack gap="1.5rem">
         <SignUpErrorMessage error={error} />
+        <SignUpSuccessMessage success={success} />
         <TextField
           error={!!formState.errors.email}
           helperText={formState.errors.email?.message}
