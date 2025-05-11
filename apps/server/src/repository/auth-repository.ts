@@ -1,5 +1,5 @@
+import { IFullUser, User } from "@ebuddy/user";
 import { auth } from "../config/firebase-config";
-import { IFullUser, User } from "../entities/user";
 import { UserRepository } from "./user-repository";
 
 /**
@@ -13,6 +13,7 @@ export class AuthRepository {
    */
   static async signUp(user: Omit<IFullUser, "id">): Promise<User | null> {
     const res = await auth
+      // @ts-expect-error User object is nullable and create user only accept undefined
       .createUser(user)
       .then(async (user) => {
         // See the UserRecord reference doc for the contents of userRecord.
@@ -24,6 +25,7 @@ export class AuthRepository {
           id: user.uid,
           email: user.email,
           displayName: user.displayName,
+          photoURL: user?.photoURL || null,
         });
         return user;
       })

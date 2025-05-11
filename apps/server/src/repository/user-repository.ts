@@ -1,6 +1,6 @@
 import { db } from "../config/firebase-config";
 import { collections } from "../constants/firestore-collection";
-import { IUser, User } from "../entities/user";
+import { IUser, User } from "@ebuddy/user";
 
 const userRefs = db.collection(collections.Users);
 

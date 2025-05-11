@@ -1,4 +1,4 @@
-import { IUser, User } from "@/entities/user";
+import { IUser, User } from "@ebuddy/user";
 import { UserService } from "@/services/user-service";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "..";

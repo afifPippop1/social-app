@@ -1,5 +1,5 @@
 import { auth } from "@/config/firebase";
-import { IUser } from "@/entities/user";
+import { IUser } from "@ebuddy/user";
 import { getIdToken } from "firebase/auth";
 
 const LOCAL_BACKEND_URL = "http://127.0.0.1:5001/pippop-dev/us-central1/api";

@@ -1,11 +1,11 @@
 export interface IFullUser {
   id: string;
   disabled?: boolean;
-  displayName: string;
+  displayName: string | null;
   emailVerified?: boolean;
-  email: string;
+  email: string | null;
   password: string;
-  photoURL?: string;
+  photoURL: string | null;
 }
 
 export type IUser = Omit<IFullUser, "password" | "disabled">;
@@ -17,13 +17,15 @@ export class User implements IUser {
   /**
    * Creates a new User instance.
    * @param {string} id - The unique identifier for the user.
-   * @param {string} email - The email address of the user.
-   * @param {string?} displayName - The name of the user.
+   * @param {string|null} email - The email address of the user.
+   * @param {string|null} displayName - The name of the user.
+   * @param {string|null} photoURL - The name of the user.
    */
   constructor(
     public id: string,
-    public email: string,
-    public displayName: string
+    public email: string | null,
+    public displayName: string | null,
+    public photoURL: string | null = null
   ) {}
 
   /**
@@ -32,8 +34,19 @@ export class User implements IUser {
    * @param {any} data - The raw object containing user data.
    * @return {User} A new User instance.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static fromJson(data: any): User {
-    return new User(data.id, data.email, data.displayName);
+    const id = data?.id || data?.uid;
+    if (
+      !id ||
+      typeof data?.email === "undefined" ||
+      typeof data?.displayName === "undefined"
+    ) {
+      throw new Error(
+        "can not create user, error: data not suite user interface"
+      );
+    }
+    return new User(id, data.email, data.displayName);
   }
 
   /**
@@ -42,11 +55,12 @@ export class User implements IUser {
    * @return {{id: string, displayName: string, email: string}}
    * A plain object representing the user.
    */
-  toJson(): { id: string; displayName: string; email: string } {
+  toJson(): IUser {
     return {
       id: this.id,
-      displayName: this.displayName,
       email: this.email,
+      displayName: this.displayName,
+      photoURL: this.photoURL,
     };
   }
 }

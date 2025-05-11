@@ -17,6 +17,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@ebuddy/user": "*",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "firebase-admin": "^12.6.0",

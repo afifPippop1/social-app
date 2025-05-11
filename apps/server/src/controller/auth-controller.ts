@@ -14,11 +14,12 @@ export class AuthController {
    */
   static async signUp(req: Request, res: Response): Promise<void> {
     try {
-      const { displayName, email, password } = req.body;
+      const { displayName, email, password, photoURL } = req.body;
       const data = await AuthRepository.signUp({
         displayName,
         email,
         password,
+        photoURL,
       });
       res.status(201).json(success(data));
       return;
