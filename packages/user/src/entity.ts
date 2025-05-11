@@ -31,9 +31,11 @@ export class User implements IUser {
     public email: string | null,
     public displayName: string | null,
     public photoURL?: string,
-    public totalAverageWeightRatings?: number,
-    public numberOfRents?: number,
-    public recentlyActive?: EpochTimeStamp
+    public totalAverageWeightRatings: number = 0,
+    public numberOfRents: number = 0,
+    public recentlyActive: EpochTimeStamp = Math.floor(
+      new Date().getTime() / 1000
+    )
   ) {}
 
   /**
