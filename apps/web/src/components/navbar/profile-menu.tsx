@@ -1,8 +1,8 @@
 "use client";
 
-import { auth } from "@/config/firebase";
 import { useAppDispatch, useAppSelector } from "@/hooks/store";
 import { logout } from "@/store/slices/auth-slice";
+import { auth } from "@ebuddy/firebase/client";
 import { Avatar, Box, Menu, MenuItem } from "@mui/material";
 import { signOut } from "firebase/auth";
 import { useRouter } from "nextjs-toploader/app";

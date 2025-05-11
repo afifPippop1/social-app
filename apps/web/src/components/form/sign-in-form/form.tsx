@@ -1,6 +1,6 @@
 "use client";
 
-import { auth } from "@/config/firebase";
+import { auth } from "@ebuddy/firebase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Stack, TextField } from "@mui/material";
 import { signInWithEmailAndPassword } from "firebase/auth";

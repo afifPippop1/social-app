@@ -14,8 +14,8 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: [
-      "./packages/user/tsconfig.json",
-      "./packages/user/tsconfig.dev.json",
+      "./packages/firebase/tsconfig.json",
+      "./packages/firebase/tsconfig.dev.json",
     ],
     sourceType: "module",
   },

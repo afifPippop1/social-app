@@ -1,4 +1,4 @@
-import { auth } from "@/config/firebase";
+import { auth } from "@ebuddy/firebase/client";
 import { IUser } from "@ebuddy/user";
 import { getIdToken } from "firebase/auth";
 
@@ -21,7 +21,7 @@ export class UserService {
         authorization,
       },
     });
-    return res.json();
+    return await res.json();
   }
 
   static async updateUser(id: string, data: Partial<IUser>) {

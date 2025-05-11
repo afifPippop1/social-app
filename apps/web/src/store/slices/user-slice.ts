@@ -33,14 +33,21 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-export const getUser = createAsyncThunk("user/get", async () => {
-  const user = await UserService.me();
-  if (user.status === "success") {
-    const userJson = User.fromJson(user.data).toJson();
-    return userJson;
+export const getUser = createAsyncThunk(
+  "user/get",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const user = await UserService.me();
+      if (user.status === "success") {
+        const userJson = User.fromJson(user.data).toJson();
+        return userJson;
+      }
+      return rejectWithValue("can not get user info");
+    } catch (e: any) {
+      return rejectWithValue(e?.message);
+    }
   }
-  return null;
-});
+);
 
 const userSlice = createSlice({
   name: "user",

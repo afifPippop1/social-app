@@ -2,10 +2,12 @@ export interface IFullUser {
   id: string;
   disabled?: boolean;
   displayName: string | null;
-  emailVerified?: boolean;
   email: string | null;
   password: string;
-  photoURL: string | null;
+  photoURL?: string;
+  totalAverageWeightRatings?: number;
+  numberOfRents?: number;
+  recentlyActive?: EpochTimeStamp;
 }
 
 export type IUser = Omit<IFullUser, "password" | "disabled">;
@@ -19,13 +21,19 @@ export class User implements IUser {
    * @param {string} id - The unique identifier for the user.
    * @param {string|null} email - The email address of the user.
    * @param {string|null} displayName - The name of the user.
-   * @param {string|null} photoURL - The name of the user.
+   * @param {string?} photoURL - The name of the user.
+   * @param {string?} totalAverageWeightRatings - The name of the user.
+   * @param {string?} numberOfRents - The name of the user.
+   * @param {EpochTimeStamp?} recentlyActive - The name of the user.
    */
   constructor(
     public id: string,
     public email: string | null,
     public displayName: string | null,
-    public photoURL: string | null = null
+    public photoURL?: string,
+    public totalAverageWeightRatings?: number,
+    public numberOfRents?: number,
+    public recentlyActive?: EpochTimeStamp
   ) {}
 
   /**

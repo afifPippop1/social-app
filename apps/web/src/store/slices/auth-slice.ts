@@ -1,5 +1,4 @@
-import { auth } from "@/config/firebase";
-import { UserService } from "@/services/user-service";
+import { auth } from "@ebuddy/firebase/client";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { onAuthStateChanged } from "firebase/auth";
 import { getUser } from "./user-slice";
@@ -10,13 +9,9 @@ export const listenToAuth = createAsyncThunk<string | null>(
     return new Promise((resolve) => {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
-          const me = await UserService.me();
-          if (me.status === "success") {
-            dispatch(getUser());
-            // dispatch(setUser(u));
-            resolve(user.getIdToken());
-            return;
-          }
+          dispatch(getUser());
+          resolve(user.getIdToken());
+          return;
         }
         resolve(null);
       });

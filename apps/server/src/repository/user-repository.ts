@@ -1,4 +1,4 @@
-import { db } from "../config/firebase-config";
+import { db } from "@ebuddy/firebase/server";
 import { collections } from "../constants/firestore-collection";
 import { IUser, User } from "@ebuddy/user";
 
@@ -46,7 +46,9 @@ export class UserRepository {
    * @param {Partial<User>}user
    * @return {Promise<void>} A promise that resolves to an array of `User`.
    */
-  static async updateUser(user: IUser): Promise<void> {
+  static async updateUser(
+    user: Partial<IUser> & Pick<IUser, "id">
+  ): Promise<void> {
     await userRefs.doc(user.id).update(this.sanitizeData(user));
     return;
   }

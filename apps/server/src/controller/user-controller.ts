@@ -32,8 +32,8 @@ export class UserController {
   static async UpdateUser(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const { email, displayName, photoURL } = req.body;
-      await UserRepository.updateUser({ id, email, displayName, photoURL });
+      const { displayName } = req.body;
+      await UserRepository.updateUser({ id, displayName });
       res.status(200).json(success({ ok: true }));
       return;
     } catch (e: any) {
