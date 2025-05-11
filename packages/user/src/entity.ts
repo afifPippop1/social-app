@@ -62,15 +62,20 @@ export class User implements IUser {
   /**
    * Converts the User instance into a plain object (e.g., for sending in
    * a response or saving).
-   * @return {{id: string, displayName: string, email: string}}
+   * @return {IUser}
    * A plain object representing the user.
    */
   toJson(): IUser {
-    return {
-      id: this.id,
-      email: this.email,
-      displayName: this.displayName,
-      photoURL: this.photoURL,
-    };
+    return Object.fromEntries(
+      Object.entries({
+        id: this.id,
+        email: this.email,
+        displayName: this.displayName,
+        photoURL: this.photoURL,
+        numberOfRents: this.numberOfRents,
+        recentlyActive: this.recentlyActive,
+        totalAverageWeightRatings: this.totalAverageWeightRatings,
+      }).filter(([_, v]) => typeof v !== "undefined" && v !== null)
+    ) as IUser;
   }
 }

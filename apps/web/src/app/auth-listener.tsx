@@ -11,7 +11,7 @@ export default function AuthListener({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
-  const user = useAppSelector((s) => s.user.user);
+  const token = useAppSelector((s) => s.auth.token);
   const loading = useAppSelector((s) => s.auth.loading);
 
   useEffect(() => {
@@ -19,16 +19,15 @@ export default function AuthListener({ children }: { children: ReactNode }) {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(user, pathname);
     if (
-      !user &&
+      !token &&
       !loading &&
       pathname !== "/sign-in" &&
       pathname !== "/sign-up"
     ) {
       router.push("/sign-in");
     }
-  }, [user, router, pathname, loading]);
+  }, [token, router, pathname, loading]);
 
   if (loading) {
     return (
@@ -44,7 +43,7 @@ export default function AuthListener({ children }: { children: ReactNode }) {
     );
   }
 
-  if (user) {
+  if (token) {
     return <AuthenticatedLayout>{children}</AuthenticatedLayout>;
   }
 

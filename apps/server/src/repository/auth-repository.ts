@@ -21,29 +21,14 @@ export class AuthRepository {
         if (!user.uid || !user.email || !user.displayName) {
           throw new Error("Something went wrong");
         }
+        const usr = User.fromJson(user).toJson();
 
-        await UserRepository.addUser({
-          id: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-        });
+        await UserRepository.addUser(usr);
         return user;
       })
       .then((user) => {
         return User.fromJson(user);
       });
     return res;
-  }
-
-  /**
-   * Retrieves all users from the Firestore collection.
-   * @param {IFullUser}user
-   * @return {Promise<SignUpResult>}
-   */
-  static async signIn({
-    email,
-    password,
-  }: Pick<IFullUser, "email" | "password">): Promise<void> {
-    return;
   }
 }

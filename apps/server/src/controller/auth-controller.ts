@@ -14,7 +14,6 @@ export class AuthController {
    */
   static async signUp(req: Request, res: Response): Promise<void> {
     try {
-      console.log("HELLO");
       const { displayName, email, password } = req.body;
       const data = await AuthRepository.signUp({
         displayName,
