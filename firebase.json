@@ -16,7 +16,7 @@
   },
   "functions": [
     {
-      "source": "functions",
+      "source": "apps/server",
       "codebase": "default",
       "ignore": [
         "node_modules",

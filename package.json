@@ -4,6 +4,12 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
-    "@types/node": "^22.15.17"
-  }
+    "@types/node": "^22.15.17",
+    "turbo": "^2.5.3"
+  },
+  "packageManager": "npm@8.5.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }
