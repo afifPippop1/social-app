@@ -11,7 +11,7 @@ export function Navbar() {
     >
       <Container>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Link href="/">Home</Link>
+          <Link href="/profile">Profile</Link>
           <ProfileMenu />
         </Box>
       </Container>

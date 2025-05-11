@@ -19,6 +19,7 @@ export const ProfileItem = ({
       alignItems="center"
       py="0.5rem"
       px="1rem"
+      gap="1.5rem"
       sx={{
         cursor: "pointer",
         ":hover": {
@@ -27,9 +28,18 @@ export const ProfileItem = ({
       }}
       onClick={onClick}
     >
-      <Typography>{label}</Typography>
-      <Box display="flex" alignItems="center" gap="1rem">
-        <Typography>{value}</Typography>
+      <Typography flex={1} minWidth="50%">
+        {label}
+      </Typography>
+      <Box
+        display="flex"
+        justifyContent="end"
+        alignItems="center"
+        gap="1rem"
+        flex={1}
+        minWidth={0}
+      >
+        <Typography noWrap>{value}</Typography>
         <IconButton>
           <MdChevronRight />
         </IconButton>

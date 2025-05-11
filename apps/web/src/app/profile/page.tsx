@@ -3,7 +3,7 @@
 import { useAppSelector } from "@/hooks/store";
 import { Box, Stack, Typography } from "@mui/material";
 import EditDisplayName from "./edit-displayname";
-import { ProfileItem } from "./profile-list-item";
+import EditEmail from "./edit-email";
 
 export default function ProfilePage() {
   const user = useAppSelector((s) => s.user.user);
@@ -13,7 +13,7 @@ export default function ProfilePage() {
       <Box>
         <Typography>Profile</Typography>
         <Stack>
-          <ProfileItem label="Email address" value={user?.email} />
+          <EditEmail />
           <EditDisplayName />
         </Stack>
       </Box>

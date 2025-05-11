@@ -19,17 +19,21 @@ type UpdateUserInfoData = Partial<Omit<IUser, "id">>;
 
 export const updateUser = createAsyncThunk(
   "user/update",
-  async (data: UpdateUserInfoData, { getState, dispatch }) => {
-    const state = getState() as RootState;
-    const userId = state.user.user?.id;
-    if (!userId) {
-      return;
+  async (data: UpdateUserInfoData, { getState, dispatch, rejectWithValue }) => {
+    try {
+      const state = getState() as RootState;
+      const userId = state.user.user?.id;
+      if (!userId) {
+        return;
+      }
+      const res = await UserService.updateUser(userId, data);
+      if (res.status === "success") {
+        dispatch(getUser());
+      }
+      return null;
+    } catch (e: any) {
+      return rejectWithValue(e.message);
     }
-    const res = await UserService.updateUser(userId, data);
-    if (res.status === "success") {
-      dispatch(getUser());
-    }
-    return null;
   }
 );
 
@@ -67,10 +71,11 @@ const userSlice = createSlice({
       })
       .addCase(updateUser.fulfilled, (state) => {
         state.loading = false;
+        state.error = null;
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? "Failed to fetch user";
+        state.error = (action.payload as string) ?? "Failed to update user";
       })
       .addCase(getUser.pending, (state) => {
         state.loading = true;
@@ -82,7 +87,7 @@ const userSlice = createSlice({
       })
       .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message ?? "Failed to fetch user";
+        state.error = (action.payload as string) ?? "Failed to fetch user";
       });
   },
 });

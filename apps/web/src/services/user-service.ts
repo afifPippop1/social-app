@@ -36,7 +36,8 @@ export class UserService {
       body: JSON.stringify(data),
     });
 
-    if (!res.ok) throw new Error("Failed to update user");
-    return res.json();
+    const resJson = await res.json();
+    if (resJson.status !== "success") throw Error(resJson.error.message);
+    return resJson;
   }
 }

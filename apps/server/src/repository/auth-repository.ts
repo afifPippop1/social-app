@@ -31,4 +31,18 @@ export class AuthRepository {
       });
     return res;
   }
+
+  /**
+   * Retrieves all users from the Firestore collection.
+   * @param {string}id
+   * @param {string}email
+   * @return {Promise<User>}
+   */
+  static async updateEmail(id: string, email: string): Promise<User> {
+    return User.fromJson(
+      await auth.updateUser(id, {
+        email,
+      })
+    );
+  }
 }
