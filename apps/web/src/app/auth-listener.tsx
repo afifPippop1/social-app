@@ -19,12 +19,16 @@ export default function AuthListener({ children }: { children: ReactNode }) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (user && pathname === "/sign-in") {
-      router.push("/");
-    } else if (!user && pathname !== "/sign-in") {
+    console.log(user, pathname);
+    if (
+      !user &&
+      !loading &&
+      pathname !== "/sign-in" &&
+      pathname !== "/sign-up"
+    ) {
       router.push("/sign-in");
     }
-  }, [user, router, pathname]);
+  }, [user, router, pathname, loading]);
 
   if (loading) {
     return (

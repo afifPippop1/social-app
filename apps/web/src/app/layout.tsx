@@ -6,6 +6,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import AuthListener from "./auth-listener";
+import NextTopLoader from "nextjs-toploader";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -27,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.variable}>
+        <NextTopLoader showSpinner={false} />
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <Providers>

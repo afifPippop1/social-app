@@ -1,4 +1,4 @@
-import { SignInForm } from "@/components/form/sign-in-form";
+import { SignUpForm } from "@/components/form/sign-up-form";
 import {
   Box,
   Card,
@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 
-export default function SignInPage() {
+export default function SignUpPage() {
   return (
     <Box
       height="100%"
@@ -22,9 +22,9 @@ export default function SignInPage() {
           <CardContent>
             <Stack gap="2rem">
               <Typography variant="h4">Sign in</Typography>
-              <SignInForm />
+              <SignUpForm />
               <Typography variant="body2">
-                Don&apos;t account? <Link href="/sign-up">Create one.</Link>
+                Already have account? <Link href="/sign-in">Sign in</Link>
               </Typography>
             </Stack>
           </CardContent>
