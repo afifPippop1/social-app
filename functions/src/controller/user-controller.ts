@@ -34,7 +34,7 @@ export class UserController {
       const { id } = req.params;
       const { email, displayName } = req.body;
       await UserRepository.updateUser({ id, email, displayName });
-      res.status(200).json({ ok: true });
+      res.status(200).json(success({ ok: true }));
       return;
     } catch (e: any) {
       res.status(500).json(error(e?.message || "Something went wrong"));

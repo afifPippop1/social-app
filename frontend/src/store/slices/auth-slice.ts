@@ -1,20 +1,20 @@
 import { auth } from "@/config/firebase";
-import { IUser, User } from "@/entities/user";
 import { UserService } from "@/services/user-service";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { onAuthStateChanged } from "firebase/auth";
+import { getUser } from "./user-slice";
 
-export const listenToAuth = createAsyncThunk<IUser | null>(
+export const listenToAuth = createAsyncThunk<string | null>(
   "auth/listen",
-  async () => {
+  async (_, { dispatch }) => {
     return new Promise((resolve) => {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
           const me = await UserService.me();
           if (me.status === "success") {
-            const u = User.fromJson(me.data).toJson();
-            console.log(u);
-            resolve(u);
+            dispatch(getUser());
+            // dispatch(setUser(u));
+            resolve(user.getIdToken());
             return;
           }
         }
@@ -25,15 +25,15 @@ export const listenToAuth = createAsyncThunk<IUser | null>(
 );
 
 type AuthState = {
-  user: IUser | null;
+  token: string | null;
   loading: boolean;
-  error: string | undefined;
+  error: string | null;
 };
 
 const initialState: AuthState = {
-  user: null,
+  token: null,
   loading: true,
-  error: undefined,
+  error: null,
 };
 
 const authSlice = createSlice({
@@ -41,7 +41,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout(state) {
-      state.user = null;
+      state.token = null;
     },
   },
   extraReducers: (builder) => {
@@ -50,11 +50,11 @@ const authSlice = createSlice({
         state.loading = true;
       })
       .addCase(listenToAuth.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.token = action.payload;
         state.loading = false;
       })
       .addCase(listenToAuth.rejected, (state, action) => {
-        state.error = action.error.message;
+        state.error = action.error.message || null;
         state.loading = false;
       });
   },

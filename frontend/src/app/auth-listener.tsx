@@ -11,7 +11,7 @@ export default function AuthListener({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
-  const user = useAppSelector((s) => s.auth.user);
+  const user = useAppSelector((s) => s.user.user);
   const loading = useAppSelector((s) => s.auth.loading);
 
   useEffect(() => {

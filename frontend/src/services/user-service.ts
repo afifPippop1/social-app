@@ -24,10 +24,10 @@ export class UserService {
     return res.json();
   }
 
-  static async updateUser(data: Partial<IUser>) {
+  static async updateUser(id: string, data: Partial<IUser>) {
     const authorization = await this.getToken();
 
-    const res = await fetch(`${BASE_URL}/me`, {
+    const res = await fetch(`${BASE_URL}/users/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

@@ -1,20 +1,45 @@
-import { IUser } from "@/entities/user";
+import { IUser, User } from "@/entities/user";
+import { UserService } from "@/services/user-service";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
 
 type UserState = {
-  users: IUser[];
-  status: "idle" | "loading" | "succeeded" | "failed";
+  user: IUser | null;
+  loading: boolean;
   error: string | null;
 };
 
 const initialState: UserState = {
-  users: [],
-  status: "idle",
+  user: null,
+  loading: true,
   error: null,
 };
 
-export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
-  return [];
+type UpdateUserInfoData = Partial<Omit<IUser, "id">>;
+
+export const updateUser = createAsyncThunk(
+  "user/update",
+  async (data: UpdateUserInfoData, { getState, dispatch }) => {
+    const state = getState() as RootState;
+    const userId = state.user.user?.id;
+    if (!userId) {
+      return;
+    }
+    const res = await UserService.updateUser(userId, data);
+    if (res.status === "success") {
+      dispatch(getUser());
+    }
+    return null;
+  }
+);
+
+export const getUser = createAsyncThunk("user/get", async () => {
+  const user = await UserService.me();
+  if (user.status === "success") {
+    const userJson = User.fromJson(user.data).toJson();
+    return userJson;
+  }
+  return null;
 });
 
 const userSlice = createSlice({
@@ -22,23 +47,34 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     clearUser: (state) => {
-      state.users = [];
-      state.status = "idle";
+      state.user = null;
+      state.loading = false;
       state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUser.pending, (state) => {
-        state.status = "loading";
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
         state.error = null;
       })
-      .addCase(fetchUser.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.users = action.payload;
+      .addCase(updateUser.fulfilled, (state) => {
+        state.loading = false;
       })
-      .addCase(fetchUser.rejected, (state, action) => {
-        state.status = "failed";
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? "Failed to fetch user";
+      })
+      .addCase(getUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message ?? "Failed to fetch user";
       });
   },

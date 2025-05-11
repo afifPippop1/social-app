@@ -18,7 +18,7 @@ export function ProfileMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const user = useAppSelector((s) => s.auth.user);
+  const user = useAppSelector((s) => s.user.user);
   const dispatch = useAppDispatch();
 
   const handleGotoProfile = useCallback(() => {
